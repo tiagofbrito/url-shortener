@@ -7,8 +7,15 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post ('/links', function (req, res) {
-  console.log(req.body.link); 
-});
+  if (
+    typeof (req.body.link) !== 'string'
+    || (req.body.link) === ''
+    || !/^https?:\/\//.test (req.body.link)
+  ) { 
+    res.status(400).json ({ error: 'body.link is not a valid url'})
+    return;
+  }
+}); 
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`);
